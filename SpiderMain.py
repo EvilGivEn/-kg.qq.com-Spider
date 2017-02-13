@@ -14,7 +14,7 @@ PreUrl = 'http://kg.qq.com/node/personal?uid='
 while True:
 
 	temp = raw_input(u'请输入要抓取的全民K歌个人主页链接: '.decode('utf-8').encode('gbk'))
-	temp = re.findall(r'\w{16,}', temp)
+	temp = re.findall(r'\w{10,}', temp)
 
 	if len(temp) == 0:
 		print u'错误的个人主页.'
