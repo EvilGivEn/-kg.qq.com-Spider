@@ -57,6 +57,7 @@ class KGSpider:
 				if Times <= 3:
 					print Name + u' 下载失败 正在进行第 ' + str(Times) + u' 次重试(共 3 次)'
 					Times += 1
+					time.sleep(3)
 					continue
 				else:
 					print Name + u' 下载失败 重试次数用尽'
@@ -93,7 +94,8 @@ class KGSpider:
 			for it in temp:
 				self.Songs += [{'url':'http://kg.qq.com/node/play?s=' + it['shareid'], 'name':it['title'], 'id':it['shareid']}]
 
-		Path = './' + UserName.decode('utf-8').encode('gbk') + ' [' + self.uid + ']' + '/'
+		Path = './' + re.sub(r'[\/:*?"<>|]', '_', UserName.decode('utf-8').encode('gbk')) + ' [' + self.uid + ']' + '/'
+
 		if not os.path.exists(Path):
 			os.makedirs(Path)
 
@@ -111,9 +113,9 @@ class KGSpider:
 			ThisThread.join()
 
 		if len(self.Failed) == 0:
-			print u'全部下载完成'
+			print u'\n全部下载完成'
 		else:
-			print u'部分歌曲下载失败'
+			print u'部分内容下载失败'
 			for it in self.Failed:
 				print it['name'] + ' [' + it['id'] + ']'
 
