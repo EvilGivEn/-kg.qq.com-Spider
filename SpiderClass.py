@@ -9,7 +9,6 @@ import time
 import json
 import threading
 import hashlib
-from bs4 import BeautifulSoup
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -75,6 +74,7 @@ class KGSpider:
 			UserName = ''
 		else:
 			UserName = UserName[0][28:-7]
+		UserName = re.sub(r'<img src=.*?>', ' ', UserName)
 		print u'用户名: ' + UserName
 	
 		html  = requests.get(url = self.PreUrl + '&start=' + str(1) + '&num=8&touin=&share_uid=' + self.uid)
@@ -94,7 +94,10 @@ class KGSpider:
 			for it in temp:
 				self.Songs += [{'url':'http://kg.qq.com/node/play?s=' + it['shareid'], 'name':it['title'], 'id':it['shareid']}]
 
-		Path = './' + re.sub(r'[\/:*?"<>|]', '_', UserName.decode('utf-8').encode('gbk')) + ' [' + self.uid + ']' + '/'
+		UserName = re.sub(r'[\/:*?"<>|]', '_', UserName.decode('utf-8').encode('gbk'))
+		if len(UserName) > 180:
+			UserName = UserName[:180]
+		Path = './' + UserName + ' [' + self.uid + ']' + '/'
 
 		if not os.path.exists(Path):
 			os.makedirs(Path)
